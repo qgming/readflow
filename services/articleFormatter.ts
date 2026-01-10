@@ -4,7 +4,7 @@ export function formatArticleToParagraphs(content: string): string {
   // 1. 建立常见缩写库，防止 U.S. Mr. 等被错误断句
   const abbreviations = [
     'Mr', 'Ms', 'Mrs', 'Dr', 'Prof', 'Sr', 'Jr', 'vs', 'e.g', 'i.e', 
-    'U.S', 'U.K', 'U.N', 'B.A', 'M.A', 'Ph.D', 'approx', 'etc', 'vol'
+    'U.S', 'U.K', 'U.N', 'B.A', 'M.A', 'Ph.D', 'approx', 'etc', 'vol','M.L'
   ];
   const abbrPattern = abbreviations.map(a => a.replace(/\./g, '\\.')).join('|');
 

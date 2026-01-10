@@ -11,18 +11,23 @@ function stripHtml(html: string): string {
   const entities: Record<string, string> = {
     '&nbsp;': ' ', '&amp;': '&', '&lt;': '<', '&gt;': '>',
     '&quot;': '"', '&ldquo;': '"', '&rdquo;': '"',
-    '&#x27;': "'", '&#39;': "'", '&#34;': '"', '&#8221;': '"',
     '&hellip;': '…', '&mdash;': '—', '&ndash;': '–', '&iacute;': 'í',
     '&rsquo;': "'"
   };
 
   return html
+    .replace(/&[a-z]+;|&#\d+;|&#x[\da-f]+;/gi, m => {
+      const lower = m.toLowerCase();
+      if (entities[lower]) return entities[lower];
+      if (m.startsWith('&#x')) return String.fromCharCode(parseInt(m.slice(3, -1), 16));
+      if (m.startsWith('&#')) return String.fromCharCode(parseInt(m.slice(2, -1)));
+      return m;
+    })
     .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/p>/gi, '\n')
     .replace(/<[^>]*>/g, '')
-    .replace(/&[a-z]+;|&#\d+;|&#x[\da-f]+;/gi, m => entities[m.toLowerCase()] || m)
     .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
+    .replace(/\n{2,}/g, '\n')
     .trim();
 }
 
@@ -42,7 +47,7 @@ export async function fetchRSS(url: string): Promise<RSSItem[]> {
       const plainText = stripHtml(htmlContent);
 
       return {
-        title: item.title || '',
+        title: stripHtml(item.title || ''),
         time: formatDate(item.pubDate || ''),
         link: item.link || '',
         description: plainText,

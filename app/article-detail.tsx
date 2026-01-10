@@ -1,20 +1,31 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Bookmark, ChevronLeft } from 'lucide-react-native';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 import { formatArticleToParagraphs } from '../services/articleFormatter';
 import { useTheme } from '@/contexts/Theme';
+import { useBookmarkStore } from '@/store/bookmarkStore';
 
 export default function ArticleDetail() {
   const { title, description } = useLocalSearchParams();
   const router = useRouter();
   const { colors } = useTheme();
+  const addBookmark = useBookmarkStore((state) => state.addBookmark);
+
+  const handleBookmark = () => {
+    try {
+      addBookmark(title as string, '', description as string);
+      Alert.alert('成功', '文章已收藏');
+    } catch {
+      Alert.alert('错误', '收藏失败');
+    }
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Pressable style={[styles.backButton, { backgroundColor: colors.card }]} onPress={() => router.back()}>
         <ChevronLeft color={colors.text} size={28} />
       </Pressable>
-      <Pressable style={[styles.saveButton, { backgroundColor: colors.card }]} onPress={() => {}}>
+      <Pressable style={[styles.saveButton, { backgroundColor: colors.card }]} onPress={handleBookmark}>
         <Bookmark color={colors.text} size={24} />
       </Pressable>
       <ScrollView>

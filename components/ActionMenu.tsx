@@ -1,4 +1,4 @@
-import { Moon, Smartphone, Sun } from 'lucide-react-native';
+import { Moon, Smartphone, Sun, Share2, Trash2 } from 'lucide-react-native';
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../contexts/Theme';
@@ -30,6 +30,8 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
     'sunny-outline': Sun,
     'moon-outline': Moon,
     'phone-portrait-outline': Smartphone,
+    'share-outline': Share2,
+    'trash-outline': Trash2,
   };
 
   return (
