@@ -1,30 +1,34 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import BookCard from '../../components/BookCard';
 
 const mockData = [
   {
+    id: 'bbc-news',
     title: 'BBC News',
     description: "The BBC is the world's leading public service broadcaster",
-    lastUpdate: '2小时前',
-    category: '新闻',
-    emoji: '📰',
+    logo: require('../../assets/books/bbc-news.png'),
     rssUrl: 'https://plink.anyfeeder.com/bbc',
   },
   {
+    id: 'time',
     title: 'TIME',
     description: 'Breaking news and analysis from TIME.com',
-    lastUpdate: '5小时前',
-    category: '新闻',
-    emoji: '⏰',
+    logo: require('../../assets/books/time.png'),
     rssUrl: 'https://plink.anyfeeder.com/time',
   },
   {
+    id: 'news-insider',
     title: 'Business Insider',
     description: 'Business Insider is a fast-growing business site',
-    lastUpdate: '1天前',
-    category: '商业',
-    emoji: '💼',
+    logo: require('../../assets/books/news-insider.png'),
     rssUrl: 'https://plink.anyfeeder.com/businessinsider',
+  },
+  {
+    id: 'vice',
+    title: 'Vice',
+    description: 'Vice is a global youth media company',
+    logo: require('../../assets/books/vice.png'),
+    rssUrl: 'https://plink.anyfeeder.com/vice',
   },
 ];
 
@@ -43,7 +47,7 @@ export default function LibraryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#f9fafb',
   },
   list: {
     flex: 1,
