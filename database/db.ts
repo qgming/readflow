@@ -22,6 +22,10 @@ export const getBookmarks = () => {
   return db.getAllSync('SELECT * FROM bookmarks ORDER BY created_at DESC');
 };
 
+export const getBookmarkById = (id: number) => {
+  return db.getFirstSync('SELECT * FROM bookmarks WHERE id = ?', [id]);
+};
+
 export const deleteBookmark = (id: number) => {
   db.runSync('DELETE FROM bookmarks WHERE id = ?', [id]);
 };

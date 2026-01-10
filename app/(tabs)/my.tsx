@@ -1,4 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { ChevronRight, Languages, Palette } from 'lucide-react-native';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ActionMenu } from '../../components/ActionMenu';
@@ -26,15 +27,24 @@ export default function MyScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.menuList, { backgroundColor: colors.card }]}>
-        <View style={styles.menuItem}>
-          <Ionicons name="color-palette-outline" size={24} color={colors.textSecondary} />
-          <Text style={[styles.menuText, { color: colors.text }]}>主题模式</Text>
-          <TouchableOpacity onPress={handleThemePress}>
-            <Text style={[styles.themeValue, { color: colors.textSecondary }]}>{currentThemeLabel}</Text>
-          </TouchableOpacity>
-        </View>
+       <View style={[styles.menuCard, { backgroundColor: colors.card }]}>
+        <Palette size={24} color={colors.textSecondary} />
+        <Text style={[styles.menuText, { color: colors.text }]}>主题模式</Text>
+        <TouchableOpacity onPress={handleThemePress}>
+          <Text style={[styles.themeValue, { color: colors.textSecondary }]}>{currentThemeLabel}</Text>
+        </TouchableOpacity>
       </View>
+      
+      <TouchableOpacity
+        style={[styles.menuCard, { backgroundColor: colors.card }]}
+        onPress={() => router.push('/translation-preference')}
+      >
+        <Languages size={24} color={colors.textSecondary} />
+        <Text style={[styles.menuText, { color: colors.text }]}>翻译偏好</Text>
+        <ChevronRight size={20} color={colors.textSecondary} />
+      </TouchableOpacity>
+
+     
 
       <ActionMenu
         visible={menuVisible}
@@ -54,16 +64,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 16,
+    gap: 12,
   },
-  menuList: {
-    marginHorizontal: 16,
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  menuItem: {
+  menuCard: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
+    marginHorizontal: 16,
+    borderRadius: 12,
   },
   menuText: {
     flex: 1,

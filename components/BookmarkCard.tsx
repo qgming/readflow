@@ -8,13 +8,12 @@ import { ActionMenu } from './ActionMenu';
 interface BookmarkCardProps {
   id: number;
   title: string;
-  content: string;
   created_at: number;
   onDelete?: (id: number) => void;
   onShare?: (id: number) => void;
 }
 
-export default function BookmarkCard({ id, title, content, created_at, onDelete, onShare }: BookmarkCardProps) {
+export default function BookmarkCard({ id, title, created_at, onDelete, onShare }: BookmarkCardProps) {
   const router = useRouter();
   const { colors } = useTheme();
   const [menuVisible, setMenuVisible] = useState(false);
@@ -22,7 +21,7 @@ export default function BookmarkCard({ id, title, content, created_at, onDelete,
 
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
-    return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
   };
 
   const showActionMenu = (event: any) => {
@@ -52,7 +51,7 @@ export default function BookmarkCard({ id, title, content, created_at, onDelete,
             <MoreHorizontal size={20} color={colors.textSecondary} />
           </Pressable>
         </View>
-        <Pressable onPress={() => router.push({ pathname: '/article-read', params: { title, content } })}>
+        <Pressable onPress={() => router.push({ pathname: '/article-read', params: { id: id.toString() } })}>
           <Text style={[styles.title, { color: colors.text }]} numberOfLines={2}>{title}</Text>
         </Pressable>
       </View>
