@@ -1,9 +1,41 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import BookCard from '../../components/BookCard';
+
+const mockData = [
+  {
+    title: 'BBC News',
+    description: "The BBC is the world's leading public service broadcaster",
+    lastUpdate: '2小时前',
+    category: '新闻',
+    emoji: '📰',
+    rssUrl: 'https://plink.anyfeeder.com/bbc',
+  },
+  {
+    title: 'TIME',
+    description: 'Breaking news and analysis from TIME.com',
+    lastUpdate: '5小时前',
+    category: '新闻',
+    emoji: '⏰',
+    rssUrl: 'https://plink.anyfeeder.com/time',
+  },
+  {
+    title: 'Business Insider',
+    description: 'Business Insider is a fast-growing business site',
+    lastUpdate: '1天前',
+    category: '商业',
+    emoji: '💼',
+    rssUrl: 'https://plink.anyfeeder.com/businessinsider',
+  },
+];
 
 export default function LibraryScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>图书馆</Text>
+      <ScrollView style={styles.list} contentContainerStyle={styles.listContent}>
+        {mockData.map((item, index) => (
+          <BookCard key={index} {...item} />
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -11,12 +43,12 @@ export default function LibraryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F5F5F5',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    paddingTop: 12,
   },
 });

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(npm uninstall lucide-react-native)"
+      "Bash(npm uninstall lucide-react-native)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }
