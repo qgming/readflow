@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function HomeScreen() {
+export default function WordsScreen() {
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
+      <Text style={styles.title}>单词</Text>
     </View>
   );
 }
@@ -11,6 +11,12 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });

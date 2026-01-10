@@ -1,33 +1,54 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { BookOpen, Home, Library, User } from 'lucide-react-native';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+    <Tabs screenOptions={{
+      tabBarActiveTintColor: '#007AFF',
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+        borderBottomWidth: 1,
+        borderBottomColor: '#E5E5E5',
+        elevation: 0,
+        shadowOpacity: 0
+      },
+      tabBarStyle: {
+        backgroundColor: '#FFFFFF',
+        height: 80,
+        paddingBottom: 8,
+        paddingTop: 8,
+        borderTopWidth: 1,
+        borderTopColor: '#E5E5E5',
+        elevation: 0,
+        shadowOpacity: 0
+      }
+    }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: '首页',
+          tabBarIcon: ({ color, size }) => <Home color={color} size={size} />
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="words"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: '单词',
+          tabBarIcon: ({ color, size }) => <BookOpen color={color} size={size} />
+        }}
+      />
+      <Tabs.Screen
+        name="library"
+        options={{
+          title: '图书馆',
+          tabBarIcon: ({ color, size }) => <Library color={color} size={size} />
+        }}
+      />
+      <Tabs.Screen
+        name="my"
+        options={{
+          title: '我的',
+          tabBarIcon: ({ color, size }) => <User color={color} size={size} />
         }}
       />
     </Tabs>
