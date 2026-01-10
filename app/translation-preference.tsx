@@ -7,31 +7,31 @@ import { SelectDrawer } from '../components/SelectDrawer';
 import { useTheme } from '../contexts/Theme';
 
 const LANGUAGES = {
-  BG: { name: 'Bulgarian', nativeName: 'Български' },
-  ZH: { name: 'Chinese', nativeName: '中文' },
-  CS: { name: 'Czech', nativeName: 'Česky' },
-  DA: { name: 'Danish', nativeName: 'Dansk' },
-  NL: { name: 'Dutch', nativeName: 'Nederlands' },
-  EN: { name: 'English', nativeName: 'English' },
-  ET: { name: 'Estonian', nativeName: 'Eesti' },
-  FI: { name: 'Finnish', nativeName: 'Suomi' },
-  FR: { name: 'French', nativeName: 'Français' },
-  DE: { name: 'German', nativeName: 'Deutsch' },
-  EL: { name: 'Greek', nativeName: 'Ελληνικά' },
-  HU: { name: 'Hungarian', nativeName: 'Magyar' },
-  IT: { name: 'Italian', nativeName: 'Italiano' },
-  JA: { name: 'Japanese', nativeName: '日本語' },
-  LV: { name: 'Latvian', nativeName: 'Latviešu' },
-  LT: { name: 'Lithuanian', nativeName: 'Lietuvių' },
-  PL: { name: 'Polish', nativeName: 'Polski' },
-  PT: { name: 'Portuguese', nativeName: 'Português' },
-  RO: { name: 'Romanian', nativeName: 'Română' },
-  RU: { name: 'Russian', nativeName: 'Русский' },
-  SK: { name: 'Slovak', nativeName: 'Slovenčina' },
-  SL: { name: 'Slovenian', nativeName: 'Slovenščina' },
-  ES: { name: 'Spanish', nativeName: 'Español' },
-  SV: { name: 'Swedish', nativeName: 'Svenska' },
-  UK: { name: 'Ukrainian', nativeName: 'Українська Мова' },
+  BG: { name: 'Bulgarian', nativeName: 'Български', zhName: '保加利亚语' },
+  ZH: { name: 'Chinese', nativeName: '中文', zhName: '中文' },
+  CS: { name: 'Czech', nativeName: 'Česky', zhName: '捷克语' },
+  DA: { name: 'Danish', nativeName: 'Dansk', zhName: '丹麦语' },
+  NL: { name: 'Dutch', nativeName: 'Nederlands', zhName: '荷兰语' },
+  EN: { name: 'English', nativeName: 'English', zhName: '英语' },
+  ET: { name: 'Estonian', nativeName: 'Eesti', zhName: '爱沙尼亚语' },
+  FI: { name: 'Finnish', nativeName: 'Suomi', zhName: '芬兰语' },
+  FR: { name: 'French', nativeName: 'Français', zhName: '法语' },
+  DE: { name: 'German', nativeName: 'Deutsch', zhName: '德语' },
+  EL: { name: 'Greek', nativeName: 'Ελληνικά', zhName: '希腊语' },
+  HU: { name: 'Hungarian', nativeName: 'Magyar', zhName: '匈牙利语' },
+  IT: { name: 'Italian', nativeName: 'Italiano', zhName: '意大利语' },
+  JA: { name: 'Japanese', nativeName: '日本語', zhName: '日语' },
+  LV: { name: 'Latvian', nativeName: 'Latviešu', zhName: '拉脱维亚语' },
+  LT: { name: 'Lithuanian', nativeName: 'Lietuvių', zhName: '立陶宛语' },
+  PL: { name: 'Polish', nativeName: 'Polski', zhName: '波兰语' },
+  PT: { name: 'Portuguese', nativeName: 'Português', zhName: '葡萄牙语' },
+  RO: { name: 'Romanian', nativeName: 'Română', zhName: '罗马尼亚语' },
+  RU: { name: 'Russian', nativeName: 'Русский', zhName: '俄语' },
+  SK: { name: 'Slovak', nativeName: 'Slovenčina', zhName: '斯洛伐克语' },
+  SL: { name: 'Slovenian', nativeName: 'Slovenščina', zhName: '斯洛文尼亚语' },
+  ES: { name: 'Spanish', nativeName: 'Español', zhName: '西班牙语' },
+  SV: { name: 'Swedish', nativeName: 'Svenska', zhName: '瑞典语' },
+  UK: { name: 'Ukrainian', nativeName: 'Українська Мова', zhName: '乌克兰语' },
 };
 
 export default function TranslationPreferenceScreen() {
@@ -59,10 +59,18 @@ export default function TranslationPreferenceScreen() {
     AsyncStorage.setItem('translationEngine', engine);
   };
 
-  const languageOptions = Object.entries(LANGUAGES).map(([key, value]) => ({
-    key,
-    label: value.nativeName,
-  }));
+  const languageOptions = Object.entries(LANGUAGES)
+    .sort(([keyA, valueA], [keyB, valueB]) => {
+      if (keyA === 'ZH') return -1;
+      if (keyB === 'ZH') return 1;
+      if (keyA === 'EN') return -1;
+      if (keyB === 'EN') return 1;
+      return valueA.name.localeCompare(valueB.name);
+    })
+    .map(([key, value]) => ({
+      key,
+      label: `${value.nativeName} (${value.zhName})`,
+    }));
 
   const engineOptions = [
     { key: 'google', label: 'Google翻译' },
