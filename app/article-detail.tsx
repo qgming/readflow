@@ -2,24 +2,26 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Bookmark, ChevronLeft } from 'lucide-react-native';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { formatArticleToParagraphs } from '../services/articleFormatter';
+import { useTheme } from '@/contexts/Theme';
 
 export default function ArticleDetail() {
   const { title, description } = useLocalSearchParams();
   const router = useRouter();
+  const { colors } = useTheme();
 
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.backButton} onPress={() => router.back()}>
-        <ChevronLeft color="#333" size={28} />
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Pressable style={[styles.backButton, { backgroundColor: colors.card }]} onPress={() => router.back()}>
+        <ChevronLeft color={colors.text} size={28} />
       </Pressable>
-      <Pressable style={styles.saveButton} onPress={() => {}}>
-        <Bookmark color="#333" size={24} />
+      <Pressable style={[styles.saveButton, { backgroundColor: colors.card }]} onPress={() => {}}>
+        <Bookmark color={colors.text} size={24} />
       </Pressable>
       <ScrollView>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
       <View style={styles.content}>
         {(formatArticleToParagraphs(description as string) || '暂无内容').split('\n').map((line: string, index: number) => (
-          <Text key={index} style={styles.text}>{line}</Text>
+          <Text key={index} style={[styles.text, { color: colors.text }]}>{line}</Text>
         ))}
       </View>
       </ScrollView>
@@ -30,7 +32,6 @@ export default function ArticleDetail() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
   },
   backButton: {
     position: 'absolute',
@@ -39,7 +40,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1A1A1A',
     padding: 20,
     paddingTop: 100,
     lineHeight: 38,
@@ -80,7 +78,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     lineHeight: 32,
-    color: '#333',
     marginBottom: 16,
   },
 });

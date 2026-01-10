@@ -1,5 +1,6 @@
-import { Text, StyleSheet, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, Text } from 'react-native';
+import { useTheme } from '../contexts/Theme';
 
 interface ArticleCardProps {
   title: string;
@@ -10,35 +11,33 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ title, time, link, description }: ArticleCardProps) {
   const router = useRouter();
+  const { colors } = useTheme();
 
   return (
     <Pressable
-      style={styles.card}
+      style={[styles.card, { backgroundColor: colors.card }]}
       onPress={() => router.push({ pathname: '/article-detail', params: { title, link, description } })}
     >
-      <Text style={styles.time}>{time}</Text>
-      <Text style={styles.title} numberOfLines={2}>{title}</Text>
+      <Text style={[styles.time, { color: colors.textSecondary }]}>{time}</Text>
+      <Text style={[styles.title, { color: colors.text }]} numberOfLines={2}>{title}</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
   },
   time: {
     fontSize: 12,
-    color: '#999',
     marginBottom: 8,
     fontWeight: '500',
   },
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1A1A1A',
     lineHeight: 22,
   },
 });

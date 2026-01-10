@@ -1,6 +1,7 @@
 import { Moon, Smartphone, Sun } from 'lucide-react-native';
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '../contexts/Theme';
 
 interface ActionItem {
   label: string;
@@ -21,6 +22,8 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
   anchorPosition,
   actions,
 }) => {
+  const { colors, isDark } = useTheme();
+
   if (!anchorPosition) return null;
 
   const iconMap = {
@@ -32,7 +35,11 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.overlay} onPress={onClose}>
-        <View style={[styles.menu, { top: anchorPosition.y, left: anchorPosition.x - 180 }]}>
+        <View style={[styles.menu, {
+          top: anchorPosition.y,
+          left: anchorPosition.x - 180,
+          backgroundColor: isDark ? 'rgba(28, 28, 30, 0.95)' : 'rgba(255, 255, 255, 0.95)'
+        }]}>
           {actions.map((action, index) => {
             const Icon = iconMap[action.icon as keyof typeof iconMap];
             return (
@@ -44,8 +51,8 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
                   onClose();
                 }}
               >
-                {Icon && <Icon size={18} color="#666" />}
-                <Text style={styles.text}>{action.label}</Text>
+                {Icon && <Icon size={18} color={colors.textSecondary} />}
+                <Text style={[styles.text, { color: colors.textSecondary }]}>{action.label}</Text>
               </Pressable>
             );
           })}
@@ -61,7 +68,6 @@ const styles = StyleSheet.create({
   },
   menu: {
     position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 12,
     padding: 4,
     width: 180,
@@ -81,6 +87,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#666',
   },
 });

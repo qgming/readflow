@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import BookCard from '../../components/BookCard';
+import { useTheme } from '../../contexts/Theme';
 
 const mockData = [
   {
@@ -33,8 +34,10 @@ const mockData = [
 ];
 
 export default function LibraryScreen() {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.list} contentContainerStyle={styles.listContent}>
         {mockData.map((item, index) => (
           <BookCard key={index} {...item} />
@@ -47,7 +50,6 @@ export default function LibraryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
   },
   list: {
     flex: 1,

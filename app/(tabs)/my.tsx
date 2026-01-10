@@ -2,11 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ActionMenu } from '../../components/ActionMenu';
+import { useTheme } from '../../contexts/Theme';
 
 export default function MyScreen() {
   const [menuVisible, setMenuVisible] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{ x: number; y: number } | null>(null);
-  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
+  const { theme, setTheme, colors } = useTheme();
 
   const themeOptions = [
     { key: 'light', label: '浅色模式', icon: 'sunny-outline' },
@@ -24,13 +25,13 @@ export default function MyScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.menuList}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.menuList, { backgroundColor: colors.card }]}>
         <View style={styles.menuItem}>
-          <Ionicons name="color-palette-outline" size={24} color="#666" />
-          <Text style={styles.menuText}>主题模式</Text>
+          <Ionicons name="color-palette-outline" size={24} color={colors.textSecondary} />
+          <Text style={[styles.menuText, { color: colors.text }]}>主题模式</Text>
           <TouchableOpacity onPress={handleThemePress}>
-            <Text style={styles.themeValue}>{currentThemeLabel}</Text>
+            <Text style={[styles.themeValue, { color: colors.textSecondary }]}>{currentThemeLabel}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -52,11 +53,9 @@ export default function MyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
     paddingTop: 16,
   },
   menuList: {
-    backgroundColor: '#fff',
     marginHorizontal: 16,
     borderRadius: 12,
     overflow: 'hidden',
@@ -69,11 +68,9 @@ const styles = StyleSheet.create({
   menuText: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
     marginLeft: 12,
   },
   themeValue: {
     fontSize: 15,
-    color: '#999',
   },
 });
