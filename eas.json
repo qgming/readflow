@@ -1,0 +1,20 @@
+{
+  "build": {
+    "production": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "development": {
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "developmentClient": true
+    }
+  }
+}
