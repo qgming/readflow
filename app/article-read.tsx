@@ -4,8 +4,9 @@ import { ChevronLeft, Eye, EyeOff, Languages } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { getBookmarkById, updateTranslation, Bookmark } from '../database/db';
-import { formatArticleToParagraphs } from '../services/articleFormatter';
+import { formatArticleToParagraphs, segmentWords } from '../services/articleFormatter';
 import { translationService } from '../services/translation';
+import WordDrawer from '../components/WordDrawer';
 
 export default function ArticleRead() {
   const { id } = useLocalSearchParams();
@@ -15,6 +16,8 @@ export default function ArticleRead() {
   const [translations, setTranslations] = useState<Record<number, string>>({});
   const [translating, setTranslating] = useState(false);
   const [showTranslations, setShowTranslations] = useState(true);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedWord, setSelectedWord] = useState('');
 
   useEffect(() => {
     if (id) {
@@ -106,7 +109,17 @@ export default function ArticleRead() {
           <View style={styles.content}>
             {(formatArticleToParagraphs(article.content || '') || '暂无内容').split('\n').filter(Boolean).map((line: string, index: number) => (
               <View key={index} style={styles.paragraph}>
-                <Text style={[styles.text, { color: colors.text }]}>{line}</Text>
+                <Text style={[styles.text, { color: colors.text }]}>
+                  {segmentWords(line).map((segment, i) =>
+                    segment.isWord ? (
+                      <Text key={i} onPress={() => { setSelectedWord(segment.text); setDrawerVisible(true); }} style={styles.word}>
+                        {segment.text}
+                      </Text>
+                    ) : (
+                      <Text key={i}>{segment.text}</Text>
+                    )
+                  )}
+                </Text>
                 {showTranslations && translations[index] && (
                   <Text style={[styles.translatedText, { color: colors.textSecondary }]}>{translations[index]}</Text>
                 )}
@@ -114,6 +127,7 @@ export default function ArticleRead() {
             ))}
           </View>
         </ScrollView>
+        <WordDrawer visible={drawerVisible} word={selectedWord} onClose={() => setDrawerVisible(false)} />
       </View>
     </>
   );
@@ -200,6 +214,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   text: {
+    fontSize: 18,
+    lineHeight: 32,
+  },
+  word: {
     fontSize: 18,
     lineHeight: 32,
   },

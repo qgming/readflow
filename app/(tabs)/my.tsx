@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { ChevronRight, Languages, Palette } from 'lucide-react-native';
+import { ChevronRight, Languages, Palette, Volume2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ActionMenu } from '../../components/ActionMenu';
@@ -44,7 +44,16 @@ export default function MyScreen() {
         <ChevronRight size={20} color={colors.textSecondary} />
       </TouchableOpacity>
 
-     
+      <TouchableOpacity
+        style={[styles.menuCard, { backgroundColor: colors.card }]}
+        onPress={() => router.push('/read-aloud-preference')}
+      >
+        <Volume2 size={24} color={colors.textSecondary} />
+        <Text style={[styles.menuText, { color: colors.text }]}>朗读偏好</Text>
+        <ChevronRight size={20} color={colors.textSecondary} />
+      </TouchableOpacity>
+
+
 
       <ActionMenu
         visible={menuVisible}
