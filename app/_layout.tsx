@@ -2,10 +2,12 @@ import { Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { ThemeProvider } from '../contexts/Theme';
 import { initDatabase } from '../database/db';
+import { ecdictService } from '../services/ecdict';
 
 export default function RootLayout() {
   useEffect(() => {
     initDatabase();
+    ecdictService.init();
   }, []);
 
   return (
