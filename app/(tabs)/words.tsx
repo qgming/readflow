@@ -1,10 +1,10 @@
+import WordCard from '@/components/WordCard';
 import WordDrawer from '@/components/WordDrawer';
 import { getVocabulary, VocabularyWord } from '@/database/db';
 import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useVocabularyStore } from '@/store/vocabularyStore';
-import { Trash2 } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 export default function WordsScreen() {
   useSystemColorScheme();
@@ -39,17 +39,7 @@ export default function WordsScreen() {
   };
 
   const renderItem = ({ item }: { item: VocabularyWord }) => (
-    <View style={[styles.wordItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
-      <Pressable onPress={() => handleWordPress(item.word)} style={styles.wordContent}>
-        <Text style={[styles.wordText, { color: colors.text }]}>{item.word}</Text>
-        <Text style={[styles.dateText, { color: colors.textSecondary }]}>
-          {new Date(item.created_at * 1000).toLocaleDateString()}
-        </Text>
-      </Pressable>
-      <Pressable onPress={() => handleDelete(item.word)} style={styles.deleteButton}>
-        <Trash2 color={colors.textSecondary} size={20} />
-      </Pressable>
-    </View>
+    <WordCard word={item} onPress={handleWordPress} onDelete={handleDelete} />
   );
 
   return (
@@ -77,37 +67,16 @@ export default function WordsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingTop: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    marginHorizontal: 16,
   },
   listContent: {
     paddingBottom: 16,
-  },
-  wordItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    marginBottom: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  wordContent: {
-    flex: 1,
-  },
-  wordText: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  dateText: {
-    fontSize: 12,
-  },
-  deleteButton: {
-    padding: 8,
   },
   emptyContainer: {
     flex: 1,

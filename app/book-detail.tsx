@@ -5,12 +5,16 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, RefreshCw } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const logoMap: Record<string, any> = {
   'bbc-news': require('../assets/books/bbc-news.png'),
   'time': require('../assets/books/time.png'),
   'news-insider': require('../assets/books/news-insider.png'),
   'vice': require('../assets/books/vice.png'),
+  'chinadaily': require('../assets/books/chinadaily.png'),
+  'thenewyorker': require('../assets/books/thenewyorker.png'),
+  'nfzm': require('../assets/books/nfzm.png'),
 };
 
 export default function BookDetailScreen() {
@@ -26,15 +30,33 @@ export default function BookDetailScreen() {
   const [articles, setArticles] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const loadArticles = useCallback(() => {
-    if (rssUrl) {
-      setLoading(true);
-      fetchRSS(rssUrl as string).then(data => {
-        setArticles(data);
+  const loadArticles = useCallback(async (forceRefresh = false) => {
+    if (!rssUrl) return;
+
+    const cacheKey = `articles_${id}_date`;
+    const dataKey = `articles_${id}_data`;
+    const today = new Date().toDateString();
+
+    try {
+      const lastFetchDate = await AsyncStorage.getItem(cacheKey);
+      const cachedData = await AsyncStorage.getItem(dataKey);
+
+      if (!forceRefresh && lastFetchDate === today && cachedData) {
+        setArticles(JSON.parse(cachedData));
         setLoading(false);
-      });
+        return;
+      }
+
+      setLoading(true);
+      const data = await fetchRSS(rssUrl as string);
+      setArticles(data);
+      await AsyncStorage.setItem(cacheKey, today);
+      await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+      setLoading(false);
+    } catch {
+      setLoading(false);
     }
-  }, [rssUrl]);
+  }, [rssUrl, id]);
 
   useEffect(() => {
     loadArticles();
@@ -45,7 +67,7 @@ export default function BookDetailScreen() {
       <Pressable style={[styles.backButton, { backgroundColor: colors.card }]} onPress={() => router.back()}>
         <ChevronLeft color={colors.text} size={28} />
       </Pressable>
-      <Pressable style={[styles.refreshButton, { backgroundColor: colors.card }]} onPress={loadArticles}>
+      <Pressable style={[styles.refreshButton, { backgroundColor: colors.card }]} onPress={() => loadArticles(true)}>
         <RefreshCw color={colors.text} size={24} />
       </Pressable>
       <ScrollView>
