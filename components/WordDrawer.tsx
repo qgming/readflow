@@ -1,8 +1,9 @@
-import { useTheme } from '@/contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
+import { useVocabularyStore } from '@/store/vocabularyStore';
 import { ecdictService, ECDICTWord } from '@/services/ecdict';
 import { speakWord } from '@/services/speechts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Volume2, X } from 'lucide-react-native';
+import { Volume2, X, Star } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { Dimensions, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import WordInfo from './WordInfo';
@@ -16,12 +17,19 @@ interface WordDrawerProps {
 }
 
 export default function WordDrawer({ visible, word, onClose }: WordDrawerProps) {
-  const { colors } = useTheme();
+  useSystemColorScheme();
+  const colors = useThemeStore(state => state.colors);
+  const isWordInVocabulary = useVocabularyStore(state => state.isWordInVocabulary);
+  const addWord = useVocabularyStore(state => state.addWord);
+  const removeWord = useVocabularyStore(state => state.removeWord);
   const [wordData, setWordData] = useState<ECDICTWord | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     if (visible && word) {
+      setIsFavorite(isWordInVocabulary(word));
+
       AsyncStorage.getItem('readAloudAutoPlay').then((autoPlay) => {
         if (autoPlay === 'true') {
           speakWord(word);
@@ -36,10 +44,20 @@ export default function WordDrawer({ visible, word, onClose }: WordDrawerProps) 
         setLoading(false);
       });
     }
-  }, [visible, word]);
+  }, [visible, word, isWordInVocabulary]);
 
   const handleSpeak = () => {
     speakWord(word);
+  };
+
+  const handleToggleFavorite = () => {
+    if (isFavorite) {
+      removeWord(word);
+      setIsFavorite(false);
+    } else {
+      addWord(word);
+      setIsFavorite(true);
+    }
   };
 
   return (
@@ -49,6 +67,9 @@ export default function WordDrawer({ visible, word, onClose }: WordDrawerProps) 
           <View style={styles.header}>
             <Text style={[styles.word, { color: colors.text }]}>{word}</Text>
             <View style={styles.buttonGroup}>
+              <Pressable onPress={handleToggleFavorite} style={styles.favoriteButton}>
+                <Star color={isFavorite ? '#FFD700' : colors.text} size={24} fill={isFavorite ? '#FFD700' : 'none'} />
+              </Pressable>
               <Pressable onPress={handleSpeak} style={styles.speakButton}>
                 <Volume2 color={colors.text} size={24} />
               </Pressable>
@@ -101,6 +122,9 @@ const styles = StyleSheet.create({
   buttonGroup: {
     flexDirection: 'row',
     gap: 12,
+  },
+  favoriteButton: {
+    padding: 4,
   },
   speakButton: {
     padding: 4,

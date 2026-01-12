@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, RefreshCw } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '@/contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 const logoMap: Record<string, any> = {
   'bbc-news': require('../assets/books/bbc-news.png'),
@@ -14,6 +14,7 @@ const logoMap: Record<string, any> = {
 };
 
 export default function BookDetailScreen() {
+  useSystemColorScheme();
   const { id, title, description, rssUrl } = useLocalSearchParams<{
     id: string;
     title: string;
@@ -21,7 +22,7 @@ export default function BookDetailScreen() {
     rssUrl: string;
   }>();
   const router = useRouter();
-  const { colors } = useTheme();
+  const colors = useThemeStore(state => state.colors);
   const [articles, setArticles] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
 

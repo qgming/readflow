@@ -3,12 +3,15 @@ import { ChevronRight, Languages, Palette, Volume2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ActionMenu } from '../../components/ActionMenu';
-import { useTheme } from '../../contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 export default function MyScreen() {
+  useSystemColorScheme();
   const [menuVisible, setMenuVisible] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{ x: number; y: number } | null>(null);
-  const { theme, setTheme, colors } = useTheme();
+  const theme = useThemeStore(state => state.theme);
+  const setTheme = useThemeStore(state => state.setTheme);
+  const colors = useThemeStore(state => state.colors);
 
   const themeOptions = [
     { key: 'light', label: '浅色模式', icon: 'sunny-outline' },

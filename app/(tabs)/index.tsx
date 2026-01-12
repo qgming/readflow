@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useTheme } from '../../contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 import { useBookmarkStore } from '../../store/bookmarkStore';
 import BookmarkCard from '../../components/BookmarkCard';
 
 export default function HomeScreen() {
-  const { colors } = useTheme();
+  useSystemColorScheme();
+  const colors = useThemeStore(state => state.colors);
   const { bookmarks, loadBookmarks, removeBookmark } = useBookmarkStore();
 
   useEffect(() => {

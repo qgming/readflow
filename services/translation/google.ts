@@ -1,4 +1,4 @@
-import { TranslationService, TranslationRequest, LanguageCode, SUPPORTED_LANGUAGES } from './types';
+import { SUPPORTED_LANGUAGES, TranslationRequest, TranslationService } from './types';
 
 export class GoogleTranslationService implements TranslationService {
   private static readonly API_URL = 'https://translate.googleapis.com/translate_a/single';

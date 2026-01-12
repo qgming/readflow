@@ -1,4 +1,5 @@
-import { useTheme } from '@/contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
+import { useVocabularyStore } from '@/store/vocabularyStore';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, Eye, EyeOff, Languages } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
@@ -9,15 +10,21 @@ import { translationService } from '../services/translation';
 import WordDrawer from '../components/WordDrawer';
 
 export default function ArticleRead() {
+  useSystemColorScheme();
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { colors } = useTheme();
+  const colors = useThemeStore(state => state.colors);
+  const { loadVocabulary, isWordInVocabulary } = useVocabularyStore();
   const [article, setArticle] = useState<Bookmark | null>(null);
   const [translations, setTranslations] = useState<Record<number, string>>({});
   const [translating, setTranslating] = useState(false);
   const [showTranslations, setShowTranslations] = useState(true);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedWord, setSelectedWord] = useState('');
+
+  useEffect(() => {
+    loadVocabulary();
+  }, [loadVocabulary]);
 
   useEffect(() => {
     if (id) {
@@ -112,7 +119,18 @@ export default function ArticleRead() {
                 <Text style={[styles.text, { color: colors.text }]}>
                   {segmentWords(line).map((segment, i) =>
                     segment.isWord ? (
-                      <Text key={i} onPress={() => { setSelectedWord(segment.text); setDrawerVisible(true); }} style={styles.word}>
+                      <Text
+                        key={i}
+                        onPress={() => { setSelectedWord(segment.text); setDrawerVisible(true); }}
+                        style={[
+                          styles.word,
+                          isWordInVocabulary(segment.text) && {
+                            backgroundColor: colors.background === '#000000' ? '#4A4000' : '#FFF9E6',
+                            paddingHorizontal: 2,
+                            borderRadius: 2,
+                          }
+                        ]}
+                      >
                         {segment.text}
                       </Text>
                     ) : (

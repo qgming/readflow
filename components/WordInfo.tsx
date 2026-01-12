@@ -1,4 +1,4 @@
-import { useTheme } from '@/contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 import { ECDICTWord } from '@/services/ecdict';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -8,7 +8,8 @@ interface WordInfoProps {
 }
 
 export default function WordInfo({ wordData, loading }: WordInfoProps) {
-  const { colors } = useTheme();
+  useSystemColorScheme();
+  const colors = useThemeStore(state => state.colors);
 
   const tagMapping: { [key: string]: string } = {
     'zk': '中考', 'gk': '高考', 'cet4': '四级', 'cet6': '六级',

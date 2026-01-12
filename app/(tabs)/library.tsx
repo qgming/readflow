@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import BookCard from '../../components/BookCard';
-import { useTheme } from '../../contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 const mockData = [
   {
@@ -34,7 +34,8 @@ const mockData = [
 ];
 
 export default function LibraryScreen() {
-  const { colors } = useTheme();
+  useSystemColorScheme();
+  const colors = useThemeStore(state => state.colors);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>

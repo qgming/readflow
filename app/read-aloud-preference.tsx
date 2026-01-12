@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CustomSwitch } from '../components/CustomSwitch';
 import { SelectDrawer } from '../components/SelectDrawer';
-import { useTheme } from '../contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 import { speakWord } from '../services/speechts';
 
 export default function ReadAloudPreferenceScreen() {
-  const { colors } = useTheme();
+  useSystemColorScheme();
+  const colors = useThemeStore(state => state.colors);
   const router = useRouter();
   const [voiceDrawerVisible, setVoiceDrawerVisible] = useState(false);
   const [speedDrawerVisible, setSpeedDrawerVisible] = useState(false);

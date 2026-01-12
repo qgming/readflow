@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { MoreHorizontal } from 'lucide-react-native';
 import { useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 import { ActionMenu } from './ActionMenu';
 
 interface BookmarkCardProps {
@@ -14,8 +14,9 @@ interface BookmarkCardProps {
 }
 
 export default function BookmarkCard({ id, title, created_at, onDelete, onShare }: BookmarkCardProps) {
+  useSystemColorScheme();
   const router = useRouter();
-  const { colors } = useTheme();
+  const colors = useThemeStore(state => state.colors);
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
 

@@ -4,7 +4,11 @@
       "Bash(npm install:*)",
       "Bash(npm uninstall lucide-react-native)",
       "Bash(npm uninstall:*)",
-      "Bash(gradlew.bat clean:*)"
+      "Bash(gradlew.bat clean:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(/tmp/update_theme.sh:*)",
+      "Bash(grep:*)"
     ]
   }
 }

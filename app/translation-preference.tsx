@@ -4,7 +4,7 @@ import { ChevronLeft, Globe, Zap } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectDrawer } from '../components/SelectDrawer';
-import { useTheme } from '../contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 const LANGUAGES = {
   BG: { name: 'Bulgarian', nativeName: 'Български', zhName: '保加利亚语' },
@@ -35,7 +35,8 @@ const LANGUAGES = {
 };
 
 export default function TranslationPreferenceScreen() {
-  const { colors } = useTheme();
+  useSystemColorScheme();
+  const colors = useThemeStore(state => state.colors);
   const router = useRouter();
   const [languageDrawerVisible, setLanguageDrawerVisible] = useState(false);
   const [engineDrawerVisible, setEngineDrawerVisible] = useState(false);

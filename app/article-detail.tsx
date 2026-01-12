@@ -2,13 +2,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Bookmark, ChevronLeft } from 'lucide-react-native';
 import { Pressable, ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 import { formatArticleToParagraphs } from '../services/articleFormatter';
-import { useTheme } from '@/contexts/Theme';
+import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 import { useBookmarkStore } from '@/store/bookmarkStore';
 
 export default function ArticleDetail() {
+  useSystemColorScheme();
   const { title, description } = useLocalSearchParams();
   const router = useRouter();
-  const { colors } = useTheme();
+  const colors = useThemeStore(state => state.colors);
   const addBookmark = useBookmarkStore((state) => state.addBookmark);
 
   const handleBookmark = () => {

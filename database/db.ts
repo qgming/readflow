@@ -51,4 +51,37 @@ export const updateTranslation = (id: number, translation: string) => {
   db.runSync('UPDATE bookmarks SET translation = ? WHERE id = ?', [translation, id]);
 };
 
+export interface VocabularyWord {
+  id: number;
+  word: string;
+  created_at: number;
+}
+
+export const initVocabulary = () => {
+  db.execSync(`
+    CREATE TABLE IF NOT EXISTS vocabulary (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      word TEXT NOT NULL UNIQUE,
+      created_at INTEGER DEFAULT (strftime('%s', 'now'))
+    );
+  `);
+};
+
+export const addToVocabulary = (word: string) => {
+  db.runSync('INSERT OR IGNORE INTO vocabulary (word) VALUES (?)', [word]);
+};
+
+export const removeFromVocabulary = (word: string) => {
+  db.runSync('DELETE FROM vocabulary WHERE word = ?', [word]);
+};
+
+export const isInVocabulary = (word: string): boolean => {
+  const result = db.getFirstSync('SELECT 1 FROM vocabulary WHERE word = ?', [word]);
+  return !!result;
+};
+
+export const getVocabulary = (): VocabularyWord[] => {
+  return db.getAllSync('SELECT * FROM vocabulary ORDER BY created_at DESC') as VocabularyWord[];
+};
+
 export default db;
