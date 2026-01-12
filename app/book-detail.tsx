@@ -8,12 +8,15 @@ import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const logoMap: Record<string, any> = {
-  'bbc-news': require('../assets/books/bbc-news.png'),
+  'longreads': require('../assets/books/longreads.png'),
   'time': require('../assets/books/time.png'),
-  'news-insider': require('../assets/books/news-insider.png'),
-  'vice': require('../assets/books/vice.png'),
+  'zerohedge': require('../assets/books/zerohedge.png'),
   'chinadaily': require('../assets/books/chinadaily.png'),
-  'thenewyorker': require('../assets/books/thenewyorker.png'),
+  'vice': require('../assets/books/vice.png'),
+  'bbc-news': require('../assets/books/bbc-news.png'),
+  'news-insider': require('../assets/books/news-insider.png'),
+  'bbc-technology': require('../assets/books/bbc.png'),
+  'bbc-world': require('../assets/books/bbc-world-news.png'),
   'nfzm': require('../assets/books/nfzm.png'),
 };
 

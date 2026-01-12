@@ -1,0 +1,62 @@
+[
+  {
+    "id": "longreads",
+    "title": "Longreads",
+    "description": "精选长篇非虚构作品，以深度叙事和人文故事著称",
+    "rssUrl": "https://longreads.com/feed/"
+  },
+  {
+    "id": "vice",
+    "title": "Vice",
+    "description": "全球青年文化媒体，关注前沿议题和边缘文化",
+    "rssUrl": "https://plink.anyfeeder.com/vice"
+  },
+  {
+    "id": "time",
+    "title": "TIME",
+    "description": "美国时代周刊，提供全球新闻、深度分析和独家报道",
+    "rssUrl": "https://plink.anyfeeder.com/time"
+  },
+  {
+    "id": "zerohedge",
+    "title": "ZeroHedge",
+    "description": "金融博客网站，以另类视角解读市场和经济动态",
+    "rssUrl": "https://plink.anyfeeder.com/zerohedge"
+  },
+  {
+    "id": "chinadaily",
+    "title": "中国日报",
+    "description": "中国国家级英文日报，向世界传播中国声音",
+    "rssUrl": "https://feedx.net/rss/chinadaily.xml"
+  },
+  {
+    "id": "bbc-news",
+    "title": "BBC News",
+    "description": "英国广播公司，以客观公正的全球新闻报道著称",
+    "rssUrl": "https://plink.anyfeeder.com/bbc"
+  },
+  {
+    "id": "news-insider",
+    "title": "Business Insider",
+    "description": "商业新闻网站，聚焦科技创新和商业趋势",
+    "rssUrl": "https://plink.anyfeeder.com/businessinsider"
+  },
+  {
+    "id": "bbc-technology",
+    "title": "BBC Technology",
+    "description": "BBC 科技频道，报道前沿技术和数字文化",
+    "rssUrl": "https://plink.anyfeeder.com/bbc/technology"
+  },
+  {
+    "id": "bbc-world",
+    "title": "BBC World",
+    "description": "BBC 国际频道，提供全球视角的深度报道",
+    "rssUrl": "https://plink.anyfeeder.com/bbc/world"
+  },
+  {
+    "id": "nfzm",
+    "title": "南方周末",
+    "description": "广州综合性新闻周报，以深度调查报道和人文关怀著称",
+    "rssUrl": "https://plink.anyfeeder.com/infzm/recommends"
+  }
+]

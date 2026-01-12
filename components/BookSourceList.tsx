@@ -1,58 +1,25 @@
 import { useThemeColors } from '@/store/themeStore';
 import { useRouter } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import bookSourcesData from '../assets/bookSources.json';
 
-const bookSources = [
-  {
-    id: 'time',
-    title: 'TIME',
-    logo: require('../assets/books/time.png'),
-    description: '美国时代周刊',
-    rssUrl: 'https://plink.anyfeeder.com/time',
-  },
-  {
-    id: 'chinadaily',
-    title: '中国日报',
-    logo: require('../assets/books/chinadaily.png'),
-    description: '中国国家级英文日报',
-    rssUrl: 'https://feedx.net/rss/chinadaily.xml',
-  },
-  {
-    id: 'vice',
-    title: 'Vice',
-    logo: require('../assets/books/vice.png'),
-    description: '全球青年文化媒体',
-    rssUrl: 'https://plink.anyfeeder.com/vice',
-  },
-  {
-    id: 'bbc-news',
-    title: 'BBC News',
-    logo: require('../assets/books/bbc-news.png'),
-    description: '英国广播公司',
-    rssUrl: 'https://plink.anyfeeder.com/bbc',
-  },
-  {
-    id: 'news-insider',
-    title: 'Business Insider',
-    logo: require('../assets/books/news-insider.png'),
-    description: '商业科技资讯',
-    rssUrl: 'https://plink.anyfeeder.com/businessinsider',
-  },
-  {
-    id: 'thenewyorker',
-    title: 'The New Yorker',
-    logo: require('../assets/books/thenewyorker.png'),
-    description: '纽约客杂志',
-    rssUrl: 'https://feedx.net/rss/newyorker.xml',
-  },
-  {
-    id: 'nfzm',
-    title: '南方周末',
-    logo: require('../assets/books/nfzm.png'),
-    description: '广州综合性新闻周报',
-    rssUrl: 'https://feedx.net/rss/infzm.xml',
-  },
-];
+const logoMap: Record<string, any> = {
+  'longreads': require('../assets/books/longreads.png'),
+  'time': require('../assets/books/time.png'),
+  'zerohedge': require('../assets/books/zerohedge.png'),
+  'chinadaily': require('../assets/books/chinadaily.png'),
+  'vice': require('../assets/books/vice.png'),
+  'bbc-news': require('../assets/books/bbc-news.png'),
+  'news-insider': require('../assets/books/news-insider.png'),
+  'bbc-technology': require('../assets/books/bbc.png'),
+  'bbc-world': require('../assets/books/bbc-world-news.png'),
+  'nfzm': require('../assets/books/nfzm.png'),
+};
+
+const bookSources = bookSourcesData.map(source => ({
+  ...source,
+  logo: logoMap[source.id],
+}));
 
 export default function BookSourceList() {
   const { colors } = useThemeColors();
