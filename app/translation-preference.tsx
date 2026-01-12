@@ -1,10 +1,10 @@
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Stack, useRouter } from 'expo-router';
 import { ChevronLeft, Globe, Zap } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectDrawer } from '../components/SelectDrawer';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 const LANGUAGES = {
   BG: { name: 'Bulgarian', nativeName: 'Български', zhName: '保加利亚语' },
@@ -36,7 +36,7 @@ const LANGUAGES = {
 
 export default function TranslationPreferenceScreen() {
   useSystemColorScheme();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const router = useRouter();
   const [languageDrawerVisible, setLanguageDrawerVisible] = useState(false);
   const [engineDrawerVisible, setEngineDrawerVisible] = useState(false);

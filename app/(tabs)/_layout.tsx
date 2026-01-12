@@ -1,10 +1,10 @@
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { Tabs } from 'expo-router';
 import { BookOpen, Home, Library, User } from 'lucide-react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 export default function TabLayout() {
   useSystemColorScheme();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
 
   return (
     <Tabs screenOptions={{

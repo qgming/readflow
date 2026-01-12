@@ -1,7 +1,7 @@
-import { Moon, Smartphone, Sun, Share2, Trash2 } from 'lucide-react-native';
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
+import { Moon, Share2, Smartphone, Sun, Trash2 } from 'lucide-react-native';
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 interface ActionItem {
   label: string;
@@ -23,8 +23,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
   actions,
 }) => {
   useSystemColorScheme();
-  const colors = useThemeStore(state => state.colors);
-  const isDark = useThemeStore(state => state.isDark);
+  const { colors, isDark } = useThemeColors();
 
   if (!anchorPosition) return null;
 

@@ -1,9 +1,9 @@
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
-import { useVocabularyStore } from '@/store/vocabularyStore';
 import { ecdictService, ECDICTWord } from '@/services/ecdict';
 import { speakWord } from '@/services/speechts';
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
+import { useVocabularyStore } from '@/store/vocabularyStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Volume2, X, Star } from 'lucide-react-native';
+import { Star, Volume2, X } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { Dimensions, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import WordInfo from './WordInfo';
@@ -18,7 +18,7 @@ interface WordDrawerProps {
 
 export default function WordDrawer({ visible, word, onClose }: WordDrawerProps) {
   useSystemColorScheme();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const isWordInVocabulary = useVocabularyStore(state => state.isWordInVocabulary);
   const addWord = useVocabularyStore(state => state.addWord);
   const removeWord = useVocabularyStore(state => state.removeWord);

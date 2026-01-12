@@ -1,10 +1,10 @@
 import ArticleCard from '@/components/ArticleCard';
 import { fetchRSS, RSSItem } from '@/services/rss';
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, RefreshCw } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 const logoMap: Record<string, any> = {
   'bbc-news': require('../assets/books/bbc-news.png'),
@@ -22,7 +22,7 @@ export default function BookDetailScreen() {
     rssUrl: string;
   }>();
   const router = useRouter();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const [articles, setArticles] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
 

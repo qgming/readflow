@@ -1,6 +1,6 @@
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import React from 'react';
 import { Dimensions, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -27,8 +27,7 @@ export const SelectDrawer: React.FC<SelectDrawerProps> = ({
   title,
 }) => {
   useSystemColorScheme();
-  const colors = useThemeStore(state => state.colors);
-  const isDark = useThemeStore(state => state.isDark);
+  const { colors, isDark } = useThemeColors();
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>

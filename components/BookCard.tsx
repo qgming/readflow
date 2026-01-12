@@ -1,6 +1,6 @@
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useRouter } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 interface BookCardProps {
   id: string;
@@ -13,7 +13,7 @@ interface BookCardProps {
 export default function BookCard({ id, title, description, logo, rssUrl }: BookCardProps) {
   useSystemColorScheme();
   const router = useRouter();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
 
   return (
     <Pressable

@@ -1,6 +1,6 @@
 import { Animated, Pressable, StyleSheet } from 'react-native';
 import { useEffect, useRef } from 'react';
-import { useThemeStore } from '@/store/themeStore';
+import { useThemeColors } from '@/store/themeStore';
 
 interface CustomSwitchProps {
   value: boolean;
@@ -8,7 +8,7 @@ interface CustomSwitchProps {
 }
 
 export function CustomSwitch({ value, onValueChange }: CustomSwitchProps) {
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const translateX = useRef(new Animated.Value(value ? 20 : 0)).current;
 
   useEffect(() => {

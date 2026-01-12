@@ -41,9 +41,18 @@ interface ThemeStore {
   setTheme: (theme: ThemeMode) => void;
   setSystemColorScheme: (scheme: 'light' | 'dark' | null) => void;
   loadTheme: () => Promise<void>;
-  colors: ThemeColors;
-  isDark: boolean;
+  getColors: () => ThemeColors;
+  getIsDark: () => boolean;
 }
+
+const computeIsDark = (theme: ThemeMode, systemColorScheme: 'light' | 'dark' | null): boolean => {
+  return theme === 'dark' || (theme === 'system' && systemColorScheme === 'dark');
+};
+
+const computeColors = (theme: ThemeMode, systemColorScheme: 'light' | 'dark' | null): ThemeColors => {
+  const isDark = computeIsDark(theme, systemColorScheme);
+  return isDark ? darkColors : lightColors;
+};
 
 export const useThemeStore = create<ThemeStore>((set, get) => ({
   theme: 'system',
@@ -65,15 +74,14 @@ export const useThemeStore = create<ThemeStore>((set, get) => ({
     }
   },
 
-  get colors() {
+  getColors: () => {
     const state = get();
-    const isDark = state.theme === 'dark' || (state.theme === 'system' && state.systemColorScheme === 'dark');
-    return isDark ? darkColors : lightColors;
+    return computeColors(state.theme, state.systemColorScheme);
   },
 
-  get isDark() {
+  getIsDark: () => {
     const state = get();
-    return state.theme === 'dark' || (state.theme === 'system' && state.systemColorScheme === 'dark');
+    return computeIsDark(state.theme, state.systemColorScheme);
   },
 }));
 
@@ -85,4 +93,15 @@ export function useSystemColorScheme() {
   useEffect(() => {
     setSystemColorScheme(systemColorScheme as 'light' | 'dark' | null);
   }, [systemColorScheme, setSystemColorScheme]);
+}
+
+// Custom hook to get theme colors with proper reactivity
+export function useThemeColors() {
+  const theme = useThemeStore(state => state.theme);
+  const systemColorScheme = useThemeStore(state => state.systemColorScheme);
+
+  const isDark = theme === 'dark' || (theme === 'system' && systemColorScheme === 'dark');
+  const colors = isDark ? darkColors : lightColors;
+
+  return { colors, isDark };
 }

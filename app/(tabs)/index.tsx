@@ -1,12 +1,13 @@
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
-import { useBookmarkStore } from '../../store/bookmarkStore';
 import BookmarkCard from '../../components/BookmarkCard';
+import DailyQuote from '../../components/DailyQuote';
+import { useBookmarkStore } from '../../store/bookmarkStore';
 
 export default function HomeScreen() {
   useSystemColorScheme();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const { bookmarks, loadBookmarks, removeBookmark } = useBookmarkStore();
 
   useEffect(() => {
@@ -19,6 +20,7 @@ export default function HomeScreen() {
         data={bookmarks}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <BookmarkCard {...item} onDelete={removeBookmark} />}
+        ListHeaderComponent={<DailyQuote />}
         contentContainerStyle={styles.list}
       />
     </View>

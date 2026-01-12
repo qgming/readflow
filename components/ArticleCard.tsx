@@ -1,6 +1,6 @@
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
 
 interface ArticleCardProps {
   title: string;
@@ -12,7 +12,7 @@ interface ArticleCardProps {
 export default function ArticleCard({ title, time, link, description }: ArticleCardProps) {
   useSystemColorScheme();
   const router = useRouter();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
 
   return (
     <Pressable

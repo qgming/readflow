@@ -1,14 +1,14 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
-import { useVocabularyStore } from '@/store/vocabularyStore';
-import { getVocabulary, VocabularyWord } from '@/database/db';
-import { useEffect, useState } from 'react';
-import { Trash2 } from 'lucide-react-native';
 import WordDrawer from '@/components/WordDrawer';
+import { getVocabulary, VocabularyWord } from '@/database/db';
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
+import { useVocabularyStore } from '@/store/vocabularyStore';
+import { Trash2 } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function WordsScreen() {
   useSystemColorScheme();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const removeWord = useVocabularyStore(state => state.removeWord);
   const [vocabulary, setVocabulary] = useState<VocabularyWord[]>([]);
   const [selectedWord, setSelectedWord] = useState<string>('');

@@ -1,15 +1,15 @@
+import { useBookmarkStore } from '@/store/bookmarkStore';
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Bookmark, ChevronLeft } from 'lucide-react-native';
-import { Pressable, ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { formatArticleToParagraphs } from '../services/articleFormatter';
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
-import { useBookmarkStore } from '@/store/bookmarkStore';
 
 export default function ArticleDetail() {
   useSystemColorScheme();
   const { title, description } = useLocalSearchParams();
   const router = useRouter();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const addBookmark = useBookmarkStore((state) => state.addBookmark);
 
   const handleBookmark = () => {

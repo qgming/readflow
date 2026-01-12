@@ -1,19 +1,19 @@
-import { useThemeStore, useSystemColorScheme } from '@/store/themeStore';
+import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useVocabularyStore } from '@/store/vocabularyStore';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, Eye, EyeOff, Languages } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { getBookmarkById, updateTranslation, Bookmark } from '../database/db';
+import WordDrawer from '../components/WordDrawer';
+import { Bookmark, getBookmarkById, updateTranslation } from '../database/db';
 import { formatArticleToParagraphs, segmentWords } from '../services/articleFormatter';
 import { translationService } from '../services/translation';
-import WordDrawer from '../components/WordDrawer';
 
 export default function ArticleRead() {
   useSystemColorScheme();
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const colors = useThemeStore(state => state.colors);
+  const { colors } = useThemeColors();
   const { loadVocabulary, isWordInVocabulary } = useVocabularyStore();
   const [article, setArticle] = useState<Bookmark | null>(null);
   const [translations, setTranslations] = useState<Record<number, string>>({});
