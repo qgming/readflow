@@ -1,15 +1,18 @@
 import { Stack } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 import { useThemeStore } from '@/store/themeStore';
 import { useVocabularyStore } from '@/store/vocabularyStore';
+import { useBookmarkStore } from '@/store/bookmarkStore';
 import { initDatabase, initVocabulary } from '../database/db';
 import { ecdictService } from '../services/ecdict';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
-  const [isReady, setIsReady] = useState(false);
   const loadVocabulary = useVocabularyStore(state => state.loadVocabulary);
   const loadTheme = useThemeStore(state => state.loadTheme);
+  const loadBookmarks = useBookmarkStore(state => state.loadBookmarks);
 
   useEffect(() => {
     async function initialize() {
@@ -19,22 +22,15 @@ export default function RootLayout() {
         await ecdictService.init();
         await loadTheme();
         loadVocabulary();
-        setIsReady(true);
+        loadBookmarks();
       } catch (error) {
         console.error('初始化失败:', error);
-        setIsReady(true);
+      } finally {
+        await SplashScreen.hideAsync();
       }
     }
     initialize();
-  }, [loadVocabulary, loadTheme]);
-
-  if (!isReady) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  }, [loadVocabulary, loadTheme, loadBookmarks]);
 
   return (
     <Stack>
@@ -44,11 +40,3 @@ export default function RootLayout() {
     </Stack>
   );
 }
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

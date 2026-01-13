@@ -91,7 +91,7 @@ export default function BookDetailScreen() {
           <ActivityIndicator size="large" color={colors.text} style={{ marginTop: 20 }} />
         ) : (
           articles.map((article, index) => (
-            <ArticleCard key={index} title={article.title} time={article.time} link={article.link} description={article.description} />
+            <ArticleCard key={index} title={article.title} time={article.time} link={article.link} description={article.description} sourceId={id} />
           ))
         )}
       </View>
