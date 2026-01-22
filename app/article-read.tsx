@@ -1,5 +1,6 @@
 import { useSystemColorScheme, useThemeColors } from '@/store/themeStore';
 import { useVocabularyStore } from '@/store/vocabularyStore';
+import { useWordLibraryStore } from '@/store/wordLibraryStore';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, Eye, EyeOff, Languages } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
@@ -9,12 +10,22 @@ import { Bookmark, getBookmarkById, updateTranslation } from '../database/db';
 import { formatArticleToParagraphs, segmentWords } from '../services/articleFormatter';
 import { translationService } from '../services/translation';
 
+const LIBRARIES = [
+  { title: '中考', tag: 'zk', color: { light: '#E3F2FD', dark: '#1E3A5F' } },
+  { title: '高考', tag: 'gk', color: { light: '#F3E5F5', dark: '#4A1E5F' } },
+  { title: '四级', tag: 'cet4', color: { light: '#E8F5E9', dark: '#1E4A2F' } },
+  { title: '六级', tag: 'cet6', color: { light: '#FFF3E0', dark: '#5F3A1E' } },
+  { title: '考研', tag: 'ky', color: { light: '#FCE4EC', dark: '#5F1E3A' } },
+  { title: '雅思', tag: 'ielts', color: { light: '#E0F2F1', dark: '#1E5F5A' } },
+];
+
 export default function ArticleRead() {
   useSystemColorScheme();
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const { colors } = useThemeColors();
   const { loadVocabulary, isWordInVocabulary } = useVocabularyStore();
+  const { isWordInLibrary, loadLibraries } = useWordLibraryStore();
   const [article, setArticle] = useState<Bookmark | null>(null);
   const [translations, setTranslations] = useState<Record<number, string>>({});
   const [translating, setTranslating] = useState(false);
@@ -24,7 +35,8 @@ export default function ArticleRead() {
 
   useEffect(() => {
     loadVocabulary();
-  }, [loadVocabulary]);
+    loadLibraries();
+  }, [loadVocabulary, loadLibraries]);
 
   useEffect(() => {
     if (id) {
@@ -117,15 +129,30 @@ export default function ArticleRead() {
             {(formatArticleToParagraphs(article.content || '') || '暂无内容').split('\n').filter(Boolean).map((line: string, index: number) => (
               <View key={index} style={styles.paragraph}>
                 <Text style={[styles.text, { color: colors.text }]}>
-                  {segmentWords(line).map((segment, i) =>
-                    segment.isWord ? (
+                  {segmentWords(line).map((segment, i) => {
+                    if (!segment.isWord) {
+                      return <Text key={i}>{segment.text}</Text>;
+                    }
+
+                    const inVocabulary = isWordInVocabulary(segment.text);
+                    const libraryTag = !inVocabulary ? isWordInLibrary(segment.text) : null;
+                    const library = libraryTag ? LIBRARIES.find(lib => lib.tag === libraryTag) : null;
+                    const isDark = colors.background === '#000000';
+
+                    const highlightColor = inVocabulary
+                      ? (isDark ? '#4A4000' : '#FFF9E6')
+                      : library
+                        ? library.color[isDark ? 'dark' : 'light']
+                        : null;
+
+                    return (
                       <Text
                         key={i}
                         onPress={() => { setSelectedWord(segment.text); setDrawerVisible(true); }}
                         style={[
                           styles.word,
-                          isWordInVocabulary(segment.text) && {
-                            backgroundColor: colors.background === '#000000' ? '#4A4000' : '#FFF9E6',
+                          highlightColor && {
+                            backgroundColor: highlightColor,
                             paddingHorizontal: 2,
                             borderRadius: 2,
                           }
@@ -133,10 +160,8 @@ export default function ArticleRead() {
                       >
                         {segment.text}
                       </Text>
-                    ) : (
-                      <Text key={i}>{segment.text}</Text>
-                    )
-                  )}
+                    );
+                  })}
                 </Text>
                 {showTranslations && translations[index] && (
                   <Text style={[styles.translatedText, { color: colors.textSecondary }]}>{translations[index]}</Text>

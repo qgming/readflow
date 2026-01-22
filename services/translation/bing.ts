@@ -4,6 +4,9 @@ export class BingTranslationService implements TranslationService {
   private static readonly API_URL = 'https://api-edge.cognitive.microsofttranslator.com/translate';
   private static readonly AUTH_URL = 'https://edge.microsoft.com/translate/auth';
 
+  private jwtToken: string | null = null;
+  private tokenPromise: Promise<string> | null = null;
+
   /**
    * 验证语言代码是否受支持
    */
@@ -34,6 +37,10 @@ export class BingTranslationService implements TranslationService {
       );
 
       if (!response.ok) {
+        if (response.status === 401) {
+          this.jwtToken = null;
+          return this.translate(request);
+        }
         throw new Error(`翻译失败: ${response.status} ${response.statusText}`);
       }
 
@@ -73,15 +80,31 @@ export class BingTranslationService implements TranslationService {
    * 获取或刷新JWT令牌
    */
   private async refreshToken(): Promise<string> {
-    try {
-      const response = await fetch(BingTranslationService.AUTH_URL);
-      if (!response.ok) {
-        throw new Error(`获取令牌失败: ${response.status} ${response.statusText}`);
-      }
-      return await response.text();
-    } catch (error) {
-      throw new Error(`获取Bing翻译令牌失败: ${String(error)}`);
+    if (this.jwtToken) {
+      return this.jwtToken;
     }
+
+    if (this.tokenPromise) {
+      return this.tokenPromise;
+    }
+
+    this.tokenPromise = (async () => {
+      try {
+        const response = await fetch(BingTranslationService.AUTH_URL);
+        if (!response.ok) {
+          throw new Error(`获取令牌失败: ${response.status} ${response.statusText}`);
+        }
+        const token = await response.text();
+        this.jwtToken = token;
+        this.tokenPromise = null;
+        return token;
+      } catch (error) {
+        this.tokenPromise = null;
+        throw new Error(`获取Bing翻译令牌失败: ${String(error)}`);
+      }
+    })();
+
+    return this.tokenPromise;
   }
 
   /**

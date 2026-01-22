@@ -30,23 +30,16 @@ class ECDICTService {
 
     try {
       const asset = Asset.fromModule(require('../assets/words.db'));
-      await asset.downloadAsync();
 
       if (!asset.localUri) {
-        throw new Error('Failed to download asset file');
+        await asset.downloadAsync();
       }
 
-      const localUri = `${Paths.document.uri.replace(/\/$/, '')}/words.db`;
-
-      const fileInfo = await getInfoAsync(localUri);
-      if (!fileInfo.exists) {
-        await copyAsync({
-          from: asset.localUri,
-          to: localUri
-        });
+      if (!asset.localUri) {
+        throw new Error('Failed to load asset file');
       }
 
-      this.db = await SQLite.openDatabaseAsync(localUri);
+      this.db = await SQLite.openDatabaseAsync(asset.localUri);
       this.isInitialized = true;
     } catch (error) {
       console.error('Error initializing ECDICT database:', error);
@@ -124,6 +117,21 @@ class ECDICTService {
     } catch (error) {
       console.error('获取单词数量失败:', error);
       return 0;
+    }
+  }
+
+  async getWordsByTag(tag: string): Promise<string[]> {
+    await this.ensureInitialized();
+
+    try {
+      const results = await this.db!.getAllAsync(
+        'SELECT word FROM words WHERE tag LIKE ? COLLATE NOCASE',
+        [`%${tag}%`]
+      );
+      return (results as any[]).map(row => row.word.toLowerCase());
+    } catch (error) {
+      console.error('查询标签单词失败:', error);
+      return [];
     }
   }
 }

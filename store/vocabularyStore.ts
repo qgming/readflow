@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { addToVocabulary, removeFromVocabulary, isInVocabulary, getVocabulary } from '@/database/db';
+import { addToVocabulary, removeFromVocabulary, getVocabulary } from '@/database/db';
 
 interface VocabularyStore {
   vocabularySet: Set<string>;

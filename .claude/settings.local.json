@@ -8,7 +8,9 @@
       "Bash(ls:*)",
       "Bash(find:*)",
       "Bash(/tmp/update_theme.sh:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npx expo:*)",
+      "Bash(dir:*)"
     ]
   }
 }
